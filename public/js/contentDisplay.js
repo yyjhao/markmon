@@ -75,6 +75,8 @@
         htmlStr: "",
         update: function(htmlStr){
             if(htmlStr === this.htmlStr) return;
+            var firstTime = false;
+            if(htmlStr === "") firstTime = true;
             this.htmlStr = htmlStr;
             var newDom = document.createElement("div");
             newDom.innerHTML = htmlStr;
@@ -82,6 +84,10 @@
             var newTree = new WrappedDomTree(newDom);
             var r = tree.diffTo(newTree);
             newTree.removeSelf();
+            if(firstTime){
+                r.possibleReplace = null;
+                r.last = null;
+            }
             addLastChangeMarker(r);
             return r;
         }

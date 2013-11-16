@@ -2,6 +2,27 @@
   max-width: 700px;
   margin: 0 auto;
   text-align: justify; }
+  .content > header {
+    font-size: 1.2em;
+    text-align: center; }
+
+.authors {
+  list-style: none;
+  margin: 0;
+  padding: 0; }
+  .authors li {
+    display: inline-block;
+    padding: 10px 1em; }
+
+.abstract {
+  font-size: 0.95em;
+  padding: 3em;
+  line-height: 1.2em; }
+  .abstract:before {
+    content: "Abstract";
+    font-weight: bold;
+    text-align: center;
+    display: block; }
 
 .highlighter {
   position: absolute;
