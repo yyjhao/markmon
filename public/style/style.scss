@@ -4,6 +4,15 @@
     text-align: justify;
 }
 
+.highlighter{
+    position: absolute;
+    border-bottom: 2px solid orangered;
+    top: -10px;
+    left: 2%;
+    width: 96%;
+    box-shadow: 0 1px 1px white;
+}
+
 img{
     width: 80%;
     margin: 0 auto;

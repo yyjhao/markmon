@@ -1,4 +1,6 @@
 (function(markmon){
+    "use strict";
+
     var TwoDArray = markmon.util.TwoDArray;
 
     var curHash = 0;
@@ -53,12 +55,22 @@
             var indexShift = 0;
 
             var last,
+                possibleReplace,
                 inserted = [],
                 r;
+            var lastOp,
+                lastElmDeleted,
+                lastElmInserted;
             if(operations){
                 if(operations instanceof Array){
                     operations.forEach(function(op){
                         if(op.type === "d"){
+                            if(lastOp && op.tree === lastOp.pos){
+                                lastElmDeleted = this.children[op.tree + indexShift].dom;
+                            } else {
+                                lastElmDeleted = null;
+                                lastElmInserted = null;
+                            }
                             r = this.remove(op.tree + indexShift);
                             this.rep.remove(op.tree + indexShift);
                             last = r;
@@ -66,6 +78,7 @@
                         } else if(op.type === "i"){
                             this.rep.insert(op.pos + indexShift, otherTree.children[op.otherTree]);
                             r = this.insert(op.pos + indexShift, otherTree.children[op.otherTree], this.rep.children[op.pos + indexShift]);
+                            lastElmInserted = r;
                             inserted.push(r);
                             last = r;
                             indexShift++;
@@ -74,17 +87,29 @@
                             if(re.last) {
                                 last = re.last;
                             }
+                            if(re.possibleReplace) {
+                                lastElmInserted = re.possibleReplace.cur;
+                                lastElmDeleted = re.possibleReplace.prev;
+                            }
                             inserted = inserted.concat(re.inserted);
                         }
+                        lastOp = op;
                     }.bind(this));
                 } else {
                     console.log(operations);
                     throw "invalid operations";
                 }
             }
+            if(lastOp && lastOp.type != 'i' && lastElmInserted && lastElmDeleted){
+                possibleReplace = {
+                    cur: lastElmInserted,
+                    prev: lastElmDeleted
+                };
+            }
             return {
                 last: last,
-                inserted: inserted
+                inserted: inserted,
+                possibleReplace: possibleReplace
             };
         },
         insert: function(i, tree, rep) {
