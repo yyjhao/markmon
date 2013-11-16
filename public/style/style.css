@@ -54,7 +54,7 @@ h6 {
   line-height: 1.5em; }
 
 .antique body {
-  background: -webkit-linear-gradient(top, rgba(255, 255, 224, 0.3), rgba(255, 255, 224, 0.3)), url("fabric_plaid.png");
+  background: -webkit-linear-gradient(top, rgba(250, 235, 215, 0.3), rgba(250, 235, 215, 0.3)), url("fabric_plaid.png");
   font-family: Palatino,Georgia,"Times New Roman";
   font-size: 1.2em;
   line-height: 1.5em;
