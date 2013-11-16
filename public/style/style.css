@@ -1,0 +1,54 @@
+.content {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: justify; }
+
+img {
+  width: 80%;
+  margin: 0 auto;
+  display: block; }
+
+figure {
+  padding: 1em 0; }
+
+figcaption {
+  text-align: center;
+  width: 100%; }
+
+h1 {
+  margin: 0.6563em 0;
+  font-size: 2.2em;
+  line-height: 1.6563em; }
+
+h2 {
+  margin: 0.875em 0;
+  font-size: 1.7143em;
+  line-height: 0.875em; }
+
+h3 {
+  margin: 1em 0;
+  font-size: 1.5em;
+  line-height: 1em; }
+
+h4 {
+  margin: 1.1667em 0;
+  font-size: 1.2857em;
+  line-height: 1.1667em; }
+
+h5 {
+  margin: 1.3125em 0;
+  font-size: 1.1429em;
+  line-height: 1.3125em; }
+
+h6 {
+  margin: 1.5em 0;
+  font-size: 1em;
+  line-height: 1.5em; }
+
+.antique body {
+  background: -webkit-linear-gradient(top, rgba(255, 255, 224, 0.3), rgba(255, 255, 224, 0.3)), url("fabric_plaid.png");
+  font-family: Palatino,Georgia,"Times New Roman";
+  font-size: 1.2em;
+  line-height: 1.5em;
+  color: #333;
+  text-shadow: 0 1px 1px #fff; }
