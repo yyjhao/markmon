@@ -32,6 +32,21 @@
     }
 }
 
+table{
+    border-collapse: collapse;
+    border: 2px solid;
+}
+
+td, th{
+    border: 2px solid;
+    padding: 5px;
+    box-shadow: inset 0 1px 1px white;
+}
+
+th{
+    text-align: center;
+}
+
 .highlighter{
     position: absolute;
     border-bottom: 2px solid orangered;
