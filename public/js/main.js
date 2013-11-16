@@ -7,22 +7,17 @@
         console.log(r);
         if(!r) return;
         r.inserted = r.inserted.map(function(elm){
-            while(!elm.innerHTML) elm = elm.parentElement;
+            while(elm && !elm.innerHTML) elm = elm.parentElement;
             return elm;
+        }).filter(function(elm){
+            return !!elm;
         });
-        if(r.possibleReplace){
-            r.last = r.possibleReplace.cur;
-        }
-        var diffElm = r.last;
-        if(diffElm){
-            while(!diffElm.innerHTML)diffElm = diffElm.parentElement;
-        }
         MathJax.Hub.Typeset(r.inserted, function(){
-            if(diffElm){
-                console.log(diffElm);
+            if(r.lastChange){
                 setTimeout(function(){
-                    highlighter.style.top = diffElm.offsetTop + diffElm.offsetHeight + "px";
-                    window.scrollTo(0, diffElm.offsetTop + diffElm.offsetHeight - window.innerHeight / 2 |0);
+                    var line = r.lastChange.offsetTop + r.lastChange.offsetHeight;
+                    highlighter.style.top = line + "px";
+                    window.scrollTo(0, line - window.innerHeight / 2 |0);
                 }, 10);
             }
         });
