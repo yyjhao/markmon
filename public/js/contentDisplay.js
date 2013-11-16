@@ -41,6 +41,7 @@
                 l1--;
                 l2--;
             }
+            l2++;
             oriNode = r.possibleReplace.cur;
             var container = oriNode.parentElement;
             var ind = [].indexOf.call(container.childNodes, oriNode);
