@@ -10,7 +10,7 @@
 
 
     var lastChange = document.createElement("span");
-    lastChange.className = "last-change-markder";
+    lastChange.className = "last-change-marker";
 
     var tree  = new WrappedDomTree(dom, true);
 

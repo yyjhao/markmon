@@ -11,6 +11,9 @@
   width: 96%;
   box-shadow: 0 1px 1px white; }
 
+.last-change-marker {
+  box-shadow: 1px 0 0 1px rgba(255, 69, 0, 0.5); }
+
 img {
   width: 80%;
   margin: 0 auto;
