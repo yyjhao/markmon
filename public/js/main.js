@@ -47,7 +47,7 @@
         MathJax.Hub.Typeset(r.inserted, function(){
             if(r.lastChange){
                 setTimeout(function(){
-                    var line = r.lastChange.offsetTop + r.lastChange.offsetHeight;
+                    var line = r.lastChange.getBoundingClientRect().bottom;
                     highlighter.style.top = line + "px";
                     scroller.scorllTo(line - window.innerHeight / 2 | 0);
                 }, 10);
