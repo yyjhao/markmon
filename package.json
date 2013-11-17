@@ -2,9 +2,17 @@
     "name": "Markmon",
     "description": "A Markdown watcher",
     "version": "0.0.1",
+    "license": "MIT",
+    "author": {
+        "name": "Yao Yujian",
+        "email": "yyjhao@gmail.com",
+        "url": "http://yjyao.com"
+    },
     "dependencies": {
         "express": "3.x",
         "socket.io": "0.9.x",
         "optimist": "0.6.x"
-    }
+    },
+    "bin": "./markmon",
+    "preferGlobal": true
 }
