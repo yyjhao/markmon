@@ -21,6 +21,8 @@ module.exports = function(port, filepath, command){
     var server = require("http").createServer(app);
     var io = require("socket.io").listen(server);
 
+    io.set('log level', 2);
+
     function parse(callback){
         exec(command + " < " + filepath, {
             cwd: projectPath
