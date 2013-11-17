@@ -5,24 +5,16 @@ var path = require("path"),
     fs = require("fs"),
     Server = require("./Server");
 
-var configFile = process.argv[2] || "config.json",
-    configPath = path.resolve(__dirname, configFile),
-    projectPath = path.dirname(configPath);
+var argv = require('optimist')
+    .usage('Usage: $0 [filename] --port [num] --command [string]')
+    .demand(['_'])
+    .describe('port', 'Port to listen to')
+    .describe('command', 'Command to parse markdown to html')
+    .default('port', 3000)
+    .default('command', 'pandoc --mathjax -N -t HTML5')
+    .argv;
 
-var config, projectPath;
+var filepath = path.resolve(__dirname, argv['_'][0]);
+var port = argv['port'];
 
-try{
-    config = JSON.parse(fs.readFileSync(configPath));
-} catch(e){
-    console.log(e);
-    console.log(configFile);
-    console.log("Error loading config file");
-    process.exit();
-}
-
-
-var filepath = path.resolve(projectPath, config.file),
-    port = 3000 || config.port,
-    command = config.command;
-
-var server = Server(port, filepath, command);
+var server = Server(port, filepath, argv['command']);
