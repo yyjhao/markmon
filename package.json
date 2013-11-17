@@ -9,9 +9,15 @@
     "socket.io": "0.9.x",
     "optimist": "0.6.x"
   },
+  "files": [
+    "bin",
+    "lib",
+    "frontend"
+  ],
   "bin": {
     "markmon": "bin/markmon"
   },
+  "main": "lib/Server.js",
   "preferGlobal": true,
   "repository": {
     "type": "git",
