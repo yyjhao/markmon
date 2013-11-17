@@ -139,25 +139,25 @@
             if(this.isText){
                 return {
                     score: 1/0,
-                    operations: "replace"
+                    operations: null
                 };
             }
             if(otherTree.isText){
                 return {
                     score: 1/0,
-                    operations: "repalce"
+                    operations: null
                 };
             }
             if(this.dom.tagName !== otherTree.dom.tagName){
                 return {
                     score: 1/0,
-                    operations: "repalce"
+                    operations: null
                 };
             }
             if(this.dom.className === "math") {
                 return {
                     score: 1/0,
-                    operations: "repalce"
+                    operations: null
                 };
             }
             var key = otherTree.hash;

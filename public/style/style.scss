@@ -3,6 +3,8 @@
     margin: 0 auto;
     text-align: justify;
 
+    font-size: 20px;
+
     &>header{
         font-size: 1.2em;
         text-align: center;
@@ -76,14 +78,14 @@ figcaption {
 }
 
 h1 {
-    margin: 0.6563em 0;
+    margin: 0.6em 0;
     font-size: 2.2em;
-    line-height: 1.6563em;
+    line-height: 1.5em;
 }
 h2 {
-    margin: 0.875em 0;
+    margin: 0.8em 0;
     font-size: 1.7143em;
-    line-height: 0.875em
+    line-height: 0.8em
 }
 h3 {
     margin: 1em 0;
@@ -91,14 +93,14 @@ h3 {
     line-height: 1em
 }
 h4 {
-    margin: 1.1667em 0;
-    font-size: 1.2857em;
-    line-height: 1.1667em
+    margin: 1em 0;
+    font-size: 1.2em;
+    line-height: 1.2em
 }
 h5 {
-    margin: 1.3125em 0;
-    font-size: 1.1429em;
-    line-height: 1.3125em
+    margin: 1.3em 0;
+    font-size: 1.1em;
+    line-height: 1.3em
 }
 h6 {
     margin: 1.5em 0;
