@@ -4,7 +4,7 @@ var path = require("path"),
     exec = require('child_process').exec,
     express = require("express");
 
-module.exports = function(port, filepath, command){
+module.exports = function(port, filepath, command, callback){
     "use strict";
 
     var projectPath = path.dirname(filepath);
@@ -56,5 +56,6 @@ module.exports = function(port, filepath, command){
         lastResult = result;
         server.listen(port);
         console.log("Listening on", port);
+        callback();
     });
 };
