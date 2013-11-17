@@ -10,22 +10,22 @@
     "optimist": "0.6.x"
   },
   "bin": {
-    "markmon": "./markmon"
+    "markmon": "bin/markmon"
   },
   "preferGlobal": true,
-  "main": "Server.js",
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git://github.com/yyjhao/markmon.git"
   },
   "keywords": [
     "markdown",
-    "node.js",
-    "socket.io",
     "previewer"
   ],
   "bugs": {
     "url": "https://github.com/yyjhao/markmon/issues"
+  },
+  "directories": {
+    "bin": "bin",
+    "lib": "lib"
   }
 }
