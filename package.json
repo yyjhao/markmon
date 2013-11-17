@@ -1,18 +1,31 @@
 {
-    "name": "Markmon",
-    "description": "A Markdown watcher",
-    "version": "0.0.1",
-    "license": "MIT",
-    "author": {
-        "name": "Yao Yujian",
-        "email": "yyjhao@gmail.com",
-        "url": "http://yjyao.com"
-    },
-    "dependencies": {
-        "express": "3.x",
-        "socket.io": "0.9.x",
-        "optimist": "0.6.x"
-    },
-    "bin": "./markmon",
-    "preferGlobal": true
+  "name": "markmon",
+  "description": "A Markdown live previewer with fast Mathjax re-rendering",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "Yao Yujian <yyjhao@gmail.com> (http://yjyao.com)",
+  "dependencies": {
+    "express": "3.x",
+    "socket.io": "0.9.x",
+    "optimist": "0.6.x"
+  },
+  "bin": {
+    "markmon": "./markmon"
+  },
+  "preferGlobal": true,
+  "main": "Server.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yyjhao/markmon.git"
+  },
+  "keywords": [
+    "markdown",
+    "node.js",
+    "socket.io",
+    "previewer"
+  ],
+  "bugs": {
+    "url": "https://github.com/yyjhao/markmon/issues"
+  }
 }

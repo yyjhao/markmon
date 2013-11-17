@@ -3,7 +3,7 @@
 var path = require("path"),
     sys = require("sys"),
     fs = require("fs"),
-    Server = require("./Server"),
+    Server = require("../lib/Server"),
     exec = require('child_process').exec;
 
 var argv = require('optimist')
@@ -16,7 +16,7 @@ var argv = require('optimist')
     .default('command', 'pandoc --mathjax -N -t HTML5')
     .argv;
 
-var filepath = path.resolve(__dirname, argv['_'][0]);
+var filepath = path.resolve(process.cwd(), argv['_'][0]);
 var port = argv['port'];
 
 var server = Server(port, filepath, argv['command'], function(){
