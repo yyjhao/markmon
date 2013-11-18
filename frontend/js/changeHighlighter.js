@@ -34,7 +34,7 @@
         addMarkerTo: function(node, prevNode){
             var ind;
             markerIn = true;
-            if(prevNode && !node.innerHTML && !prevNode.innerHTMl){
+            if(prevNode && node.nodeType === 3 && prevNode.nodeType === 3){
                 isChangingTextNode = true;
                 var ori = prevNode.data,
                     now = node.data;

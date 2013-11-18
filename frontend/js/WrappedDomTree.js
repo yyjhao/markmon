@@ -9,7 +9,7 @@
     var WrappedDomTree = markmon.WrappedDomTree = function(dom, clone, rep){
         if(clone){
             this.shownTree = new WrappedDomTree(dom, false, this);
-            this.dom = WrappedDomTree.copy(dom);
+            this.dom = dom.cloneNode(true);
         } else {
             this.dom = dom;
             this.rep = rep;
@@ -17,7 +17,7 @@
         this.clone = clone;
         this.hash = curHash++;
         hashTo[this.hash] = this;
-        this.isText = !!dom.data;
+        this.isText = dom.nodeType === 3;
         this.diffHash = {};
         if(this.isText){
             this.size = 1;
@@ -31,18 +31,6 @@
             }, 0) : 0;
             if(!this.size) this.size = 1;
         }
-    };
-
-    WrappedDomTree.copy = function(dom){
-        var r;
-        if(dom.data){
-            r = document.createTextNode(dom.data);
-        } else {
-            r = document.createElement(dom.tagName);
-            r.className = dom.className;
-            r.innerHTML = dom.innerHTML;
-        }
-        return r;
     };
 
     WrappedDomTree.prototype = {
@@ -113,7 +101,7 @@
             };
         },
         insert: function(i, tree, rep) {
-            var dom = WrappedDomTree.copy(tree.dom);
+            var dom = tree.dom.cloneNode(true);
             if(i === this.dom.childNodes.length){
                 this.dom.appendChild(dom);
             } else {
@@ -136,25 +124,7 @@
                     operations: null
                 };
             }
-            if(this.isText){
-                return {
-                    score: 1/0,
-                    operations: null
-                };
-            }
-            if(otherTree.isText){
-                return {
-                    score: 1/0,
-                    operations: null
-                };
-            }
-            if(this.dom.tagName !== otherTree.dom.tagName){
-                return {
-                    score: 1/0,
-                    operations: null
-                };
-            }
-            if(this.dom.className === "math") {
+            if(this.cannotReplaceWith(otherTree)){
                 return {
                     score: 1/0,
                     operations: null
@@ -259,6 +229,16 @@
         },
         equalTo: function(otherTree){
             return this.getContent() == otherTree.getContent();
+        },
+        cannotReplaceWith: function(otherTree){
+            return  this.isText ||
+                    otherTree.isText ||
+                    this.dom.tagName !== otherTree.dom.tagName ||
+                    this.dom.className === "math" ||
+                    (this.dom.tagName === "IMG" && (
+                        this.dom.alt !== otherTree.dom.alt ||
+                        this.dom.src !== otherTree.dom.src
+                    ));
         },
         getContent: function(){
             if(this.dom.outerHTML) return this.dom.outerHTML;
