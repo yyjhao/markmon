@@ -1,7 +1,8 @@
 (function(markmon){
     var highlighter = document.querySelector(".highlighter"),
         scroller = markmon.scroller,
-        contentDisplay = markmon.contentDisplay;
+        contentDisplay = markmon.contentDisplay,
+        changeHighlighter = markmon.changeHighlighter;
 
     var socket = io.connect(location.origin);
     socket.on("content", function(data){
@@ -16,13 +17,10 @@
             return !!elm;
         });
         MathJax.Hub.Typeset(r.inserted, function(){
-            if(r.lastChange){
-                setTimeout(function(){
-                    var line = r.lastChange.getBoundingClientRect().bottom + window.scrollY;
-                    highlighter.style.top = line + "px";
-                    scroller.scorllTo(line - window.innerHeight / 2 | 0);
-                }, 10);
-            }
+            setTimeout(function(){
+                changeHighlighter.syncHighlighter();
+                scroller.scorllTo(changeHighlighter.getMarkerY() - window.innerHeight / 2 | 0);
+            }, 10);
         });
     });
 })(window.markmon ? window.markmon : window.markmon = {});
