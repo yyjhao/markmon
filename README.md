@@ -1,14 +1,20 @@
 # markmon
 
+markmon is a pandoc/markdown previewer with fast Mathjax re-rendering.
+
 ![markmon](preview.png)
 
-markmon is a pandoc/markdown previewer with fast Mathjax re-rendering.
+While this is built mainly for pandoc and Mathjax, it should also work for
+other markdown parsers in general. Though you should really check out
+[pandoc](http://johnmacfarlane.net/pandoc/) if you haven't.
+
+Also note that markmon does not contain a parser itself.
 
 ## Features
 
 * Edit markdown in your favorite editor, get update in real-time as you save
 * Preview with anything connected to your network, including your mobile devices
-* Highlight and scroll to the latest change as the content updates
+* Automatically highlight and scroll to the latest change as the content updates
 * Fast Mathjax re-rendering, no more loading messages!
 
 ## Install
@@ -29,8 +35,8 @@ Options:
 
 ```
 
-This will set up a local server at `localhost:[port]`, and you can access the live
-update through your web browsers.
+This will set up a local server at `localhost:[port]`, and you can access the
+generated html through your web browsers.
 
 An example of `--view` for Mac OS X is `--view "open
 \"http://localhost:3000\""` which opens the page right after the server is set
@@ -53,9 +59,9 @@ It sets up a `node.js` server to watch the markdown file, and parses the file
 and sends out converted html segments via socket.io once there's an update.
 
 The frontend then diff the current DOM tree and the new DOM tree and apply a
-series of insertions and deletions to update the DOM tree. Then in runs
-Mathjax render on DOM nodes that are inserted. Also the frontend will scroll
-to the last pointer where the document is edited.
+series of insertions and deletions to update the DOM tree. Then it runs
+Mathjax render only on DOM nodes that are inserted. So in general the DOM
+update and Mathjax rendering should be fast.
 
 ## Issues
 
@@ -64,3 +70,7 @@ to the last pointer where the document is edited.
 ## License
 
 MIT
+
+## Acknowledgments
+
+`style/fabirc_plaid.png` is obtained from [http://subtlepatterns.com](http://subtlepatterns.com)
