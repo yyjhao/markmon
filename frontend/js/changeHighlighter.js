@@ -6,16 +6,19 @@
 
     marker.className = "last-change-marker";
     highlighter.className = "highlighter";
+    highlighter.style.top = "-1000px";
 
     document.body.appendChild(highlighter);
 
     var isChangingTextNode = false,
         oriNode = null,
-        spanNode = null;
+        spanNode = null,
+        markerIn = false;
 
     markmon.changeHighlighter = {
         removeMarker: function(){
-            if(!marker.parentElement) return;
+            if(!markerIn) return;
+            markerIn = false;
             marker.parentElement.removeChild(marker);
             if(isChangingTextNode){
                 var container = spanNode.parentElement;
@@ -30,6 +33,7 @@
         },
         addMarkerTo: function(node, prevNode){
             var ind;
+            markerIn = true;
             if(prevNode && !node.innerHTML && !prevNode.innerHTMl){
                 isChangingTextNode = true;
                 var ori = prevNode.data,
@@ -69,7 +73,8 @@
             return marker.getBoundingClientRect().bottom + window.scrollY;
         },
         syncHighlighter: function(){
-            highlighter.style.top = this.getMarkerY() + "px";
+            if(markerIn) highlighter.style.top = this.getMarkerY() + "px";
+            else highlighter.style.top = "-1000px";
         }
     };
 

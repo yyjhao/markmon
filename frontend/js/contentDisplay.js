@@ -17,8 +17,7 @@
         htmlStr: "",
         update: function(htmlStr){
             if(htmlStr === this.htmlStr) return;
-            var firstTime = false;
-            if(htmlStr === "") firstTime = true;
+            var firstTime = this.htmlStr === "";
             this.htmlStr = htmlStr;
             var newDom = document.createElement("div");
             newDom.innerHTML = htmlStr;
