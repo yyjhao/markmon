@@ -2,7 +2,7 @@
 
 markmon is a pandoc/markdown previewer with fast Mathjax re-rendering.
 
-![markmon](preview.png)
+![markmon](http://yjyao.com/images/markmon.png)
 
 While this is built mainly for pandoc and Mathjax, it should also work for
 other markdown parsers in general. Though you should really check out
