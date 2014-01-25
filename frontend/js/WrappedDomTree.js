@@ -18,6 +18,9 @@
         this.hash = curHash++;
         hashTo[this.hash] = this;
         this.isText = dom.nodeType === 3;
+        this.tagName = dom.tagName;
+        this.className = dom.className;
+        this.textData = dom.data;
         this.diffHash = {};
         if(this.isText){
             this.size = 1;
@@ -228,21 +231,25 @@
             return this.diffHash[key];
         },
         equalTo: function(otherTree){
-            return this.getContent() == otherTree.getContent();
+            if (this.className === "math") {
+                return otherTree.className === "math" && otherTree.dom.innerHTML == this.dom.innerHTML;
+            } else {
+                return this.isText && otherTree.isText && this.textData == otherTree.textData;
+            }
         },
         cannotReplaceWith: function(otherTree){
             return  this.isText ||
                     otherTree.isText ||
-                    this.dom.tagName !== otherTree.dom.tagName ||
-                    this.dom.className === "math" ||
-                    (this.dom.tagName === "IMG" && (
+                    this.tagName !== otherTree.tagName ||
+                    this.className === "math" ||
+                    (this.tagName === "IMG" && (
                         this.dom.alt !== otherTree.dom.alt ||
                         this.dom.src !== otherTree.dom.src
                     ));
         },
         getContent: function(){
             if(this.dom.outerHTML) return this.dom.outerHTML;
-            else return this.dom.data;
+            else return this.textData;
         },
         removeSelf: function(){
             hashTo[this.hash] = null;
