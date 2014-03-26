@@ -2,6 +2,7 @@
     markmon.util = {};
     markmon.util.TwoDArray = function(r, c){
         this._arr = new Array(r * c);
+        // this._arr = {};
         this.row = r;
         this.col = c;
     };

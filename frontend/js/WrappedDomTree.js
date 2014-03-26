@@ -164,23 +164,35 @@
             }
 
             var self = this;
-            function getScore(i, j){
+            function getScore(i, j, max){
                 if(dp.get(i, j) !== undefined){
                     return dp.get(i, j);
                 }
-                var val = getScore(i - 1, j - 1) + self.children[i - 1].diff(otherTree.children[j - 1]).score;
+                if (max === undefined) {
+                    max = 1/0;
+                }
+                if (max <= 0) {
+                    return 1/0;
+                }
+                var val = getScore(i - 1, j - 1, max - self.children[i - 1].diff(otherTree.children[j - 1]).score) + self.children[i - 1].diff(otherTree.children[j - 1]).score;
                 var prev = p.getInd(i - 1, j - 1);
-                var other = getScore(i - 1, j) + self.children[i - 1].size;
+
+                if (max != 1/0 && val >= max) {
+                    dp.set(i, j, val);
+                    p.set(i, j, prev);
+                    return 1/0;
+                }
+                var other = getScore(i - 1, j, val - self.children[i - 1].size) + self.children[i - 1].size;
                 if(other < val){
                     val = other;
                     prev = p.getInd(i - 1, j);
-                }
-                other = getScore(i, j - 1) + otherTree.children[j - 1].size;
-                if(other < val){
-                    val = other;
-                    prev = p.getInd(i, j - 1);
-                }
+                    other = getScore(i, j - 1, val - otherTree.children[j - 1].size) + otherTree.children[j - 1].size;
+                    if(other < val){
+                        val = other;
+                        prev = p.getInd(i, j - 1);
+                    }
 
+                }
                 dp.set(i, j, val);
                 p.set(i, j, prev);
                 return val;
@@ -231,6 +243,7 @@
             return this.diffHash[key];
         },
         equalTo: function(otherTree){
+            return this.dom.isEqualNode(otherTree.dom);
             if (this.className === "math") {
                 return otherTree.className === "math" && otherTree.dom.innerHTML == this.dom.innerHTML;
             } else {

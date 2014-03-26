@@ -23,7 +23,9 @@
             newDom.innerHTML = htmlStr;
             changeHighlighter.removeMarker();
             var newTree = new WrappedDomTree(newDom);
+            console.time("diff");
             var r = tree.diffTo(newTree);
+            console.timeEnd("diff");
             newTree.removeSelf();
             if(firstTime){
                 r.possibleReplace = null;
