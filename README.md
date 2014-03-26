@@ -16,6 +16,7 @@ Also note that markmon does not contain a parser itself.
 * Preview with anything connected to your network, including your mobile devices
 * Automatically highlight and scroll to the latest change as the content updates
 * Fast Mathjax re-rendering, no more loading messages!
+* Support for loading locally referenced assets like images
 
 ## Install
 
@@ -29,9 +30,10 @@ npm install -g markmon
 Usage: markmon [filename] --port [num] --command [string] --view [string]
 
 Options:
-  --port     Port to listen to                             [default: 3000]
-  --command  Command to parse markdown to html             [default: "pandoc --mathjax -N -t HTML5"]
-  --view     Command to execute after the server is setup
+  --port        Port to listen to                             [default: 3000]
+  --command     Command to parse markdown to html             [default: "pandoc --mathjax -N -t HTML5"]
+  --view        Command to execute after the server is setup
+  --projectdir  Root directory of your project, useful for local image resources
 
 ```
 
@@ -50,8 +52,12 @@ time to set up the server and parse the markdown document.
 Also the working directory of `command` will be set to the directory of the file,
 so commands like `markmon --command "pandoc --mathjax -N -t HTML5  --bibliograph=references.bib"`, where `references.bib` is in the same directory as the file, will work.
 
+You can also separately specify a project directory which will be used to override the working directory.
+
 Moreover, the directory of the file is also added as the static directory
 of the server, so the locally referenced images will also be shown correctly.
+
+Moreover, if no file name is specified, markmon will run in _server mode_: it will listen at the port for `PUT` requests of markdown documents and convert them into html  with the command specified, then broadcast the final html snippet  to all sockets. This can be useful for plugins etc.
 
 ## How does it work?
 
@@ -62,6 +68,8 @@ The frontend then diff the current DOM tree and the new DOM tree and apply a
 series of insertions and deletions to update the DOM tree. Then it runs
 Mathjax render only on DOM nodes that are inserted. So in general the DOM
 update and Mathjax rendering should be fast.
+
+The `diff` algorithm is an optimized and recursive version of the classic Levenshtein distance algorithm which runs in $O(Nd)$ time, where $N$ is the size of the original DOM tree and $d$ is th edit distance, measured in number of leave nodes. So it's very fast for general editing, even if you have a large document.
 
 ## Issues
 

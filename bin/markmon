@@ -7,16 +7,19 @@ var path = require("path"),
     exec = require('child_process').exec;
 
 var argv = require('optimist')
-    .usage('Usage: $0 [filename] --port [num] --command [string] --view [string]')
-    .demand(['_'])
+    .usage('Usage: $0 [filename] --port [num] --command [string] --view [string] --projectdir [path]')
     .describe('port', 'Port to listen to')
     .describe('command', 'Command to parse markdown to html')
     .describe('view', 'Command to execute after the server is setup')
+    .describe('projectdir', 'Root directory of your project, useful for local image resources')
     .default('port', 3000)
     .default('command', 'pandoc --mathjax -N -t HTML5')
     .argv;
 
-var filepath = path.resolve(process.cwd(), argv['_'][0]);
+var filepath;
+if (argv['_'].length) {
+    filepath = path.resolve(process.cwd(), argv['_'][0]);
+}
 var port = argv['port'];
 
 var server = Server(port, filepath, argv['command'], function(){
