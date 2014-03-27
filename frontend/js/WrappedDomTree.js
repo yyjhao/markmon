@@ -244,21 +244,13 @@
         },
         equalTo: function(otherTree){
             return this.dom.isEqualNode(otherTree.dom);
-            if (this.className === "math") {
-                return otherTree.className === "math" && otherTree.dom.innerHTML == this.dom.innerHTML;
-            } else {
-                return this.isText && otherTree.isText && this.textData == otherTree.textData;
-            }
         },
         cannotReplaceWith: function(otherTree){
             return  this.isText ||
                     otherTree.isText ||
                     this.tagName !== otherTree.tagName ||
-                    this.className === "math" ||
-                    (this.tagName === "IMG" && (
-                        this.dom.alt !== otherTree.dom.alt ||
-                        this.dom.src !== otherTree.dom.src
-                    ));
+                    this.className !== otherTree.className ||
+                    (this.tagName === "IMG" && !this.dom.isEqualNode(otherTree.dom));
         },
         getContent: function(){
             if(this.dom.outerHTML) return this.dom.outerHTML;

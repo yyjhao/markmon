@@ -20,6 +20,7 @@
             var firstTime = this.htmlStr === "";
             this.htmlStr = htmlStr;
             var newDom = document.createElement("div");
+            newDom.className = 'content';
             newDom.innerHTML = htmlStr;
             changeHighlighter.removeMarker();
             var newTree = new WrappedDomTree(newDom);
