@@ -41,7 +41,10 @@
             if(this.clone){
                 return this.shownTree.diffTo(otherTree);
             }
-            var operations = this.rep.diff(otherTree).operations;
+
+            var diff = this.rep.diff(otherTree);
+            var score = diff.score;
+            var operations = diff.operations;
 
             var indexShift = 0;
 
@@ -137,7 +140,7 @@
             var key = otherTree.hash;
             if(key in this.diffHash) return this.diffHash[key];
             if (tmax == undefined) {
-                tmax = 100;
+                tmax = 100000;
             }
             if (tmax <= 0) return 0;
 
