@@ -52,6 +52,7 @@
             var lastOp,
                 lastElmDeleted,
                 lastElmInserted;
+            // console.log(operations);
             if(operations){
                 if(operations instanceof Array){
                     operations.forEach(function(op){
@@ -120,7 +121,7 @@
             this.children.splice(i, 1);
             return this.dom.childNodes[i - 1];
         },
-        diff: function(otherTree){
+        diff: function(otherTree, tmax){
             if(this.equalTo(otherTree)){
                 return {
                     score: 0,
@@ -135,6 +136,10 @@
             }
             var key = otherTree.hash;
             if(key in this.diffHash) return this.diffHash[key];
+            if (tmax == undefined) {
+                tmax = 20;
+            }
+            if (tmax <= 0) return 0;
 
             var dp = new TwoDArray(this.children.length + 1, otherTree.children.length + 1);
             var p = new TwoDArray(this.children.length + 1, otherTree.children.length + 1);
@@ -174,31 +179,59 @@
                 if (max <= 0) {
                     return 1/0;
                 }
-                var val = getScore(i - 1, j - 1, max - self.children[i - 1].diff(otherTree.children[j - 1]).score) + self.children[i - 1].diff(otherTree.children[j - 1]).score;
-                var prev = p.getInd(i - 1, j - 1);
 
-                if (max != 1/0 && val >= max) {
-                    dp.set(i, j, val);
-                    p.set(i, j, prev);
+                function replace() {
+                    var bound = Math.min(val, max);
+                    var subdiff = self.children[i - 1].diff(otherTree.children[j - 1], bound).score;
+                    var force = false;
+                    if (subdiff < bound && subdiff + 1 < self.children[i - 1].size + otherTree.children[j - 1].size) {
+                        force = true;
+                    }
+                    return {
+                        val: getScore(i - 1, j - 1, bound - subdiff) + subdiff,
+                        prev: p.getInd(i - 1, j - 1),
+                        force: force
+                    };
+                }
+
+                function insert() {
+                    return {
+                        val: getScore(i - 1, j, Math.min(val, max) - self.children[i - 1].size) + self.children[i - 1].size,
+                        prev: p.getInd(i - 1, j)
+                    };
+                }
+
+                function remove() {
+                    return {
+                        val: getScore(i, j - 1, Math.min(val, max) - otherTree.children[j - 1].size) + otherTree.children[j - 1].size,
+                        prev: p.getInd(i, j - 1)
+                    };
+                }
+
+                var val = max, prev;
+                var end = false;
+                [replace, insert, remove].forEach(function(func) {
+                    if (end) return;
+                    var r = func();
+                    if (r.val < val) {
+                        val = r.val;
+                        prev = r.prev;
+                    }
+                    if (r.force) {
+                        end = true;
+                    }
+                });
+
+                if (val >= max) {
                     return 1/0;
                 }
-                var other = getScore(i - 1, j, val - self.children[i - 1].size) + self.children[i - 1].size;
-                if(other < val){
-                    val = other;
-                    prev = p.getInd(i - 1, j);
-                    other = getScore(i, j - 1, val - otherTree.children[j - 1].size) + otherTree.children[j - 1].size;
-                    if(other < val){
-                        val = other;
-                        prev = p.getInd(i, j - 1);
-                    }
 
-                }
                 dp.set(i, j, val);
                 p.set(i, j, prev);
                 return val;
             }
 
-            var score = getScore(this.children.length, otherTree.children.length);
+            var score = getScore(this.children.length, otherTree.children.length, tmax);
             var operations = [];
 
             var cur = p.getInd(this.children.length, otherTree.children.length),

@@ -24,9 +24,13 @@
             newDom.innerHTML = htmlStr;
             changeHighlighter.removeMarker();
             var newTree = new WrappedDomTree(newDom);
+            window.newTree = newTree;
+            window.oldTree = tree;
             console.time("diff");
+            console.profile("pdiff");
             var r = tree.diffTo(newTree);
             console.timeEnd("diff");
+            console.profileEnd("pdiff");
             newTree.removeSelf();
             if(firstTime){
                 r.possibleReplace = null;
