@@ -137,35 +137,43 @@
             var key = otherTree.hash;
             if(key in this.diffHash) return this.diffHash[key];
             if (tmax == undefined) {
-                tmax = 20;
+                tmax = 100;
             }
             if (tmax <= 0) return 0;
 
-            var dp = new TwoDArray(this.children.length + 1, otherTree.children.length + 1);
-            var p = new TwoDArray(this.children.length + 1, otherTree.children.length + 1);
+
+            var offset = 0;
+            while(offset < this.children.length &&
+                  offset < otherTree.children.length &&
+                  this.children[offset].equalTo(otherTree.children[offset])) {
+                offset++;
+            }
+
+            var dp = new TwoDArray(this.children.length + 1 - offset, otherTree.children.length + 1 - offset);
+            var p = new TwoDArray(this.children.length + 1 - offset, otherTree.children.length + 1 - offset);
             dp.set(0, 0, 0);
             var i, sum;
 
             sum = 0;
-            for(i = 1; i < otherTree.children.length; i++){
+            for(i = 1; i < otherTree.children.length - offset; i++){
                 dp.set(0, i, sum);
                 p.set(0, i, i - 1);
-                sum += otherTree.children[i].size;
+                sum += otherTree.children[i + offset].size;
             }
-            if(otherTree.children.length > 0){
-                dp.set(0, otherTree.children.length, sum);
-                p.set(0, otherTree.children.length, otherTree.children.length - 1);
+            if(otherTree.children.length - offset > 0){
+                dp.set(0, otherTree.children.length - offset, sum);
+                p.set(0, otherTree.children.length - offset, otherTree.children.length - 1 - offset);
             }
 
             sum = 0;
-            for(i = 1; i < this.children.length; i++){
+            for(i = 1; i < this.children.length - offset; i++){
                 dp.set(i, 0, sum);
                 p.set(i, 0, (i - 1) * p.col);
-                sum += this.children[i].size;
+                sum += this.children[i + offset].size;
             }
-            if(this.children.length){
-                dp.set(this.children.length, 0, sum);
-                p.set(this.children.length, 0, (this.children.length - 1) * p.col);
+            if(this.children.length - offset){
+                dp.set(this.children.length - offset, 0, sum);
+                p.set(this.children.length - offset, 0, (this.children.length - 1 - offset) * p.col);
             }
 
             var self = this;
@@ -180,50 +188,32 @@
                     return 1/0;
                 }
 
-                function replace() {
-                    var bound = Math.min(val, max);
-                    var subdiff = self.children[i - 1].diff(otherTree.children[j - 1], bound).score;
-                    var force = false;
-                    if (subdiff < bound && subdiff + 1 < self.children[i - 1].size + otherTree.children[j - 1].size) {
-                        force = true;
-                    }
-                    return {
-                        val: getScore(i - 1, j - 1, bound - subdiff) + subdiff,
-                        prev: p.getInd(i - 1, j - 1),
-                        force: force
-                    };
-                }
-
-                function insert() {
-                    return {
-                        val: getScore(i - 1, j, Math.min(val, max) - self.children[i - 1].size) + self.children[i - 1].size,
-                        prev: p.getInd(i - 1, j)
-                    };
-                }
-
-                function remove() {
-                    return {
-                        val: getScore(i, j - 1, Math.min(val, max) - otherTree.children[j - 1].size) + otherTree.children[j - 1].size,
-                        prev: p.getInd(i, j - 1)
-                    };
-                }
-
                 var val = max, prev;
-                var end = false;
-                [replace, insert, remove].forEach(function(func) {
-                    if (end) return;
-                    var r = func();
-                    if (r.val < val) {
-                        val = r.val;
-                        prev = r.prev;
+                var bound = Math.max(val, max);
+                var subdiff = self.children[i - 1 + offset].diff(otherTree.children[j - 1 + offset], bound).score;
+                var force = false;
+                if (subdiff < bound && subdiff + 1 < self.children[i - 1 + offset].size + otherTree.children[j - 1 + offset].size) {
+                    force = true;
+                }
+                val = getScore(i - 1, j - 1, bound - subdiff) + subdiff;
+                prev = p.getInd(i - 1, j - 1);
+
+                if (!force) {
+                    var other = getScore(i - 1, j, Math.min(val, max) - self.children[i - 1 + offset].size) + self.children[i - 1 + offset].size;
+                    if (other < val) {
+                        prev = p.getInd(i - 1, j);
+                        val = other;
                     }
-                    if (r.force) {
-                        end = true;
+
+                    other = getScore(i, j - 1, Math.min(val, max) - otherTree.children[j - 1 + offset].size) + otherTree.children[j - 1 + offset].size;
+                    if (other < val) {
+                        prev =  p.getInd(i, j - 1);
+                        val = other;
                     }
-                });
+                }
 
                 if (val >= max) {
-                    return 1/0;
+                    val = 1 / 0;
                 }
 
                 dp.set(i, j, val);
@@ -231,12 +221,12 @@
                 return val;
             }
 
-            var score = getScore(this.children.length, otherTree.children.length, tmax);
+            var score = getScore(this.children.length - offset, otherTree.children.length - offset, tmax);
             var operations = [];
 
-            var cur = p.getInd(this.children.length, otherTree.children.length),
-                cr = this.children.length - 1,
-                cc = otherTree.children.length - 1;
+            var cur = p.getInd(this.children.length - offset, otherTree.children.length - offset),
+                cr = this.children.length - 1 - offset,
+                cc = otherTree.children.length - 1 - offset;
             while(p.rawGet(cur) !== undefined){
                 var prev = p.rawGet(cur),
                     rc = p.get2DInd(prev),
@@ -245,21 +235,21 @@
                 if(pr === cr){
                     operations.unshift({
                         type: "i",
-                        otherTree: cc,
-                        pos: cr + 1
+                        otherTree: cc + offset,
+                        pos: cr + 1 + offset
                     });
                 } else if(pc === cc) {
                     operations.unshift({
                         type: "d",
-                        tree: cr
+                        tree: cr + offset
                     });
                 } else {
-                    var op = this.children[cr].diff(otherTree.children[cc]).operations;
+                    var op = this.children[cr + offset].diff(otherTree.children[cc + offset]).operations;
                     if(op && op.length){
                         operations.unshift({
                             type: "r",
-                            tree: cr,
-                            otherTree: cc
+                            tree: cr + offset,
+                            otherTree: cc + offset
                         });
                     }
                 }
