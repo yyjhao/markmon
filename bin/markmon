@@ -22,8 +22,13 @@ if (argv['_'].length) {
 }
 var port = argv['port'];
 
-var server = Server(port, filepath, argv['command'], function(){
-    if(argv['view']){
-        exec(argv['view']);
-    }
-}, argv['projectdir']);
+var server = Server({
+        port: port,
+        filepath: filepath,
+        projectpath: argv['projectdir'],
+        command: argv['command']
+    }, function(){
+        if(argv['view']){
+            exec(argv['view']);
+        }
+    });
