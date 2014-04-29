@@ -1,6 +1,12 @@
 body {
   line-height: 1.5; }
 
+blockquote {
+  color: #777;
+  border-left: 5px solid;
+  padding-left: 1em;
+  font-style: italic; }
+
 .content {
   max-width: 700px;
   margin: 0 auto;
