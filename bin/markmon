@@ -26,4 +26,4 @@ var server = Server(port, filepath, argv['command'], function(){
     if(argv['view']){
         exec(argv['view']);
     }
-});
+}, argv['projectdir']);
