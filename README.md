@@ -27,13 +27,14 @@ npm install -g markmon
 ## How to use?
 
 ```bash
-Usage: markmon [filename] --port [num] --command [string] --view [string]
+Usage: node ./bin/markmon [filename] --port [num] --command [string] --view [string] --projectdir [path] --stylesheet [path]
 
 Options:
-  --port        Port to listen to                             [default: 3000]
-  --command     Command to parse markdown to html             [default: "pandoc --mathjax -N -t HTML5"]
-  --view        Command to execute after the server is setup
+  --port        Port to listen to                                                 [default: 3000]
+  --command     Command to parse markdown to html                                 [default: "pandoc --mathjax -N -t HTML5"]
+  --view        Command to execute after the server is setup                    
   --projectdir  Root directory of your project, useful for local image resources
+  --stylesheet  Path to your custom stylesheet                 
 
 ```
 
@@ -69,7 +70,10 @@ series of insertions and deletions to update the DOM tree. Then it runs
 Mathjax render only on DOM nodes that are inserted. So in general the DOM
 update and Mathjax rendering should be fast.
 
-The `diff` algorithm is an optimized and recursive version of the classic Levenshtein distance algorithm which runs in $O(Nd)$ time, where $N$ is the size of the original DOM tree and $d$ is th edit distance, measured in number of leave nodes. So it's very fast for general editing, even if you have a large document.
+The `diff` algorithm is an optimized and recursive version of the classic
+Levenshtein distance algorithm which runs in roughly Nd time, where N is the
+length of the document and d is the length of change in terms of the dom
+elements. So it is very fast for most cases, even if your document is large.
 
 ## Issues
 
