@@ -1,7 +1,7 @@
 {
   "name": "markmon",
   "description": "A Markdown live previewer with fast Mathjax re-rendering",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "license": "MIT",
   "author": "Yao Yujian <yyjhao@gmail.com> (http://yjyao.com)",
   "dependencies": {
