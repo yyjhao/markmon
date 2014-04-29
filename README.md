@@ -27,15 +27,15 @@ npm install -g markmon
 ## How to use?
 
 ```bash
-Usage: node ./bin/markmon [filename] --port [num] --command [string] --view [string] --projectdir [path] --stylesheet [path]
+Usage: node ./bin/markmon [filename] --port [num] --command [string] --view [string] --projectdir [path] --stylesheet [path] --help
 
 Options:
   --port        Port to listen to                                                 [default: 3000]
   --command     Command to parse markdown to html                                 [default: "pandoc --mathjax -N -t HTML5"]
   --view        Command to execute after the server is setup                    
   --projectdir  Root directory of your project, useful for local image resources
-  --stylesheet  Path to your custom stylesheet                 
-
+  --stylesheet  Path to your custom stylesheet                                  
+  --help        Get this help message    
 ```
 
 This will set up a local server at `localhost:[port]`, and you can access the

@@ -6,17 +6,23 @@ var path = require("path"),
     Server = require("../lib/Server"),
     exec = require('child_process').exec;
 
-var argv = require('optimist')
-    .usage('Usage: $0 [filename] --port [num] --command [string] --view [string] --projectdir [path] --stylesheet [path]')
+var commandParser = require('optimist')
+    .usage('Usage: $0 [filename] --port [num] --command [string] --view [string] --projectdir [path] --stylesheet [path] --help')
     .describe('port', 'Port to listen to')
     .describe('command', 'Command to parse markdown to html')
     .describe('view', 'Command to execute after the server is setup')
     .describe('projectdir', 'Root directory of your project, useful for local image resources')
     .describe('stylesheet', 'Path to your custom stylesheet')
+    .describe('help', 'Get this help message')
     .default('port', 3000)
-    .default('command', 'pandoc --mathjax -N -t HTML5')
-    .demand('_')
-    .argv;
+    .default('command', 'pandoc --mathjax -N -t HTML5');
+
+var argv = commandParser.argv;
+
+if (argv['help']) {
+    console.log(commandParser.help());
+    process.exit(0);
+}
 
 var filepath;
 if (argv['_'].length) {
