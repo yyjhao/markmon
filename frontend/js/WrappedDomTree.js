@@ -55,40 +55,46 @@
             var lastOp,
                 lastElmDeleted,
                 lastElmInserted;
-            // console.log(operations);
             if(operations){
                 if(operations instanceof Array){
                     operations.forEach(function(op){
                         if(op.type === "d"){
-                            if(lastOp && op.tree === lastOp.pos){
-                                lastElmDeleted = this.children[op.tree + indexShift].dom;
-                            } else {
-                                lastElmDeleted = null;
-                                lastElmInserted = null;
-                            }
+                            var possibleLastDeleted = this.children[op.tree + indexShift].dom;
                             r = this.remove(op.tree + indexShift);
                             this.rep.remove(op.tree + indexShift);
-                            last = r;
+                            if (!last || last.nextSibling == r || last == r) {
+                                last = r;
+                                if(lastOp && op.tree === lastOp.pos){
+                                    lastElmDeleted = possibleLastDeleted;
+                                } else {
+                                    lastElmDeleted = null;
+                                    lastElmInserted = null;
+                                }
+                                lastOp = op;
+                            }
                             indexShift--;
                         } else if(op.type === "i"){
                             this.rep.insert(op.pos + indexShift, otherTree.children[op.otherTree]);
                             r = this.insert(op.pos + indexShift, otherTree.children[op.otherTree], this.rep.children[op.pos + indexShift]);
-                            lastElmInserted = r;
                             inserted.push(r);
-                            last = r;
+                            if (!last || last.nextSibling == r) {
+                                last = r;
+                                lastOp = op;
+                                lastElmInserted = r;
+                            }
                             indexShift++;
                         } else {
                             var re = this.children[op.tree + indexShift].diffTo(otherTree.children[op.otherTree]);
-                            if(re.last) {
+                            if(!last || (last.nextSibling == this.children[op.tree + indexShift].dom && re.last)) {
                                 last = re.last;
-                            }
-                            if(re.possibleReplace) {
-                                lastElmInserted = re.possibleReplace.cur;
-                                lastElmDeleted = re.possibleReplace.prev;
+                                if(re.possibleReplace) {
+                                    lastElmInserted = re.possibleReplace.cur;
+                                    lastElmDeleted = re.possibleReplace.prev;
+                                }
+                                lastOp = op;
                             }
                             inserted = inserted.concat(re.inserted);
                         }
-                        lastOp = op;
                     }.bind(this));
                 } else {
                     console.log(operations);
