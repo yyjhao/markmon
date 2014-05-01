@@ -283,7 +283,7 @@
                     this.tagName !== otherTree.tagName ||
                     this.className !== otherTree.className ||
                     this.className === "math" ||
-                    otherTree.className === "math" ||
+                    this.tagName === "A" ||
                     (this.tagName === "IMG" && !this.dom.isEqualNode(otherTree.dom));
         },
         getContent: function(){
