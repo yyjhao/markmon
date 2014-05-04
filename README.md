@@ -18,6 +18,10 @@ Also note that markmon does not contain a parser itself.
 * Fast Mathjax re-rendering, no more loading messages!
 * Support for loading locally referenced assets like images
 
+## Sublime text 3 plugin
+
+Want to preview markdown as you type and not just when saving? There is now a [plugin](https://github.com/yyjhao/sublime-text-markmon) for that.
+
 ## Install
 
 ```bash
