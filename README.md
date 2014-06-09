@@ -28,6 +28,8 @@ Want to preview markdown as you type and not just when saving? There is now a [p
 npm install -g markmon
 ```
 
+*Note for Windows*: You will need to have a compiler and some development files (headers) installed. The easiest thing to do is install the [Windows SDK 7.1](http://www.microsoft.com/en-ca/download/details.aspx?id=8279) and run the install cmd from the SDK Development Environment CMDline. (Note about the SDK installation: It has poorly documented issues (ie failing with a meaningless error) if you already have the MS Visual C++ 2010 redist installed - so you may have to uninstall that first and reinstall later.)
+
 ## How to use?
 
 ```bash
@@ -36,10 +38,10 @@ Usage: node ./bin/markmon [filename] --port [num] --command [string] --view [str
 Options:
   --port        Port to listen to                                                 [default: 3000]
   --command     Command to parse markdown to html                                 [default: "pandoc --mathjax -N -t HTML5"]
-  --view        Command to execute after the server is setup                    
+  --view        Command to execute after the server is setup
   --projectdir  Root directory of your project, useful for local image resources
-  --stylesheet  Path to your custom stylesheet                                  
-  --help        Get this help message    
+  --stylesheet  Path to your custom stylesheet
+  --help        Get this help message
 ```
 
 This will set up a local server at `localhost:[port]`, and you can access the
@@ -81,7 +83,7 @@ elements. So it is very fast for most cases, even if your document is large.
 
 ## Issues
 
-* Only tested on Mac OS X 10.9. The file watcher may be problematic in some systems.
+* Tested on Mac OS X 10.9 and externally with Windows 7. The file watcher may be problematic in some other systems.
 
 ## License
 
